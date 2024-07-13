@@ -1,4 +1,21 @@
-* text=auto eol=crlf
-*.jsx text eol=crlf
-*.js text eol=crlf
-*.json text eol=crlf
+# Ustaw domyślne zachowanie, w przypadku gdy ludzie nie mają skonfigurowanego core.autocrlf.
+* text=auto
+
+# Wyraźnie zadeklaruj pliki tekstowe, które zawsze powinny być znormalizowane i konwertowane 
+# do natywnych końców linii przy checkout.
+*.c text
+*.h text
+*.cpp text
+*.hpp text
+*.txt text
+*.md text
+
+# Zadeklaruj pliki, które zawsze powinny mieć CRLF na końcu linii.
+*.sln text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Zadeklaruj pliki, które są prawdziwie binarne i nie powinny być modyfikowane.
+*.png binary
+*.jpg binary
+*.gif binary
