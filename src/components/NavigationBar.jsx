@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const NavBarContainer = styled.nav`
+const Header = styled.nav`
     background-color: #1877f2;
     color: white;
     padding: 1rem 0;
@@ -36,7 +36,7 @@ const NavMenu = styled.div`
     gap: 1rem;
 `;
 
-const NavLink = styled(Link)`
+const NavLink = styled.button`
     background: none;
     border: none;
     color: white;
@@ -52,19 +52,26 @@ const NavLink = styled(Link)`
     }
 `;
 
-const NavigationBar = ({ onOpenAddItemModal }) => {
+const NavigationBar = ({ onOpenAddItemModal, onCloseAddItemModal }) => {
+    const navigate = useNavigate();
+
+    const handleNavigation = (path) => {
+        onCloseAddItemModal();
+        navigate(path);
+    };
+
     return (
-        <NavBarContainer>
+        <Header>
             <NavContainer>
                 <Logo>Oddaj rzeczy</Logo>
                 <NavMenu>
-                    <NavLink to="/">Strona główna</NavLink>
-                    <NavLink to="/about">O serwisie</NavLink>
-                    <NavLink to="/items">Lista przedmiotów</NavLink>
-                    <NavLink as="button" onClick={onOpenAddItemModal}>Dodaj przedmiot</NavLink>
+                    <NavLink onClick={() => handleNavigation('/')}>Strona główna</NavLink>
+                    <NavLink onClick={() => handleNavigation('/about')}>O nas</NavLink>
+                    <NavLink onClick={() => handleNavigation('/items')}>Lista przedmiotów</NavLink>
+                    <NavLink onClick={onOpenAddItemModal}>Dodaj przedmiot</NavLink>
                 </NavMenu>
             </NavContainer>
-        </NavBarContainer>
+        </Header>
     );
 };
 

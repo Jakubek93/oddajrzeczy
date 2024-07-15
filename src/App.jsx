@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import NavigationBar from './components/NavigationBar';
 import AddItemModal from './components/AddItemModal';
@@ -32,19 +32,21 @@ const ContentContainer = styled.div`
 
 const App = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
     const [items, setItems] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filters, setFilters] = useState({ category: '', location: '' });
+    const [sortOption, setSortOption] = useState('dateAdded');
 
     const categories = ['Odzież i Akcesoria', 'Meble i Wyposażenie Wnętrz', 'Elektronika'];
     const locations = ['Warszawa', 'Kraków', 'Łódź'];
     const voivodeships = ['Mazowieckie', 'Małopolskie', 'Łódzkie'];
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filters, setFilters] = useState({ category: '', location: '' });
-    const [sortOption, setSortOption] = useState('dateAdded');
-
     const handleOpenAddItemModal = () => {
         setIsAddModalOpen(true);
+    };
+
+    const closeAddItemModal = () => {
+        setIsAddModalOpen(false);
     };
 
     const handleAddItem = (newItem) => {
@@ -75,11 +77,14 @@ const App = () => {
             return 0;
         });
 
-    const AppContent = () => {
-        const navigate = useNavigate();
-        return (
-            <>
-                <NavigationBar onOpenAddItemModal={handleOpenAddItemModal} />
+    return (
+        <Router>
+            <GlobalStyle />
+            <AppContainer>
+                <NavigationBar
+                    onOpenAddItemModal={handleOpenAddItemModal}
+                    onCloseAddItemModal={closeAddItemModal}
+                />
                 <ContentContainer>
                     <Routes>
                         <Route path="/" element={<div>Strona główna</div>} />
@@ -88,7 +93,7 @@ const App = () => {
                             <>
                                 <SearchBar onSearch={handleSearch} />
                                 <SortOptions onSortChange={handleSortChange} />
-                                <Filters onFilterChange={handleFilterChange} />
+                                <Filters onFilterChange={handleFilterChange} categories={categories} locations={locations} voivodeships={voivodeships} />
                                 <ItemList items={filteredItems} />
                             </>
                         } />
@@ -96,22 +101,13 @@ const App = () => {
                 </ContentContainer>
                 {isAddModalOpen && (
                     <AddItemModal
-                        onClose={() => setIsAddModalOpen(false)}
+                        onClose={closeAddItemModal}
                         onAddItem={handleAddItem}
                         categories={categories}
                         locations={locations}
                         voivodeships={voivodeships}
                     />
                 )}
-            </>
-        );
-    };
-
-    return (
-        <Router>
-            <GlobalStyle />
-            <AppContainer>
-                <AppContent />
             </AppContainer>
         </Router>
     );
