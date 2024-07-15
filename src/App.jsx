@@ -9,16 +9,17 @@ import SearchBar from './components/SearchBar';
 import Filters from './components/Filters';
 import SortOptions from './components/SortOptions';
 import AboutService from './components/AboutService';
+import HomePage from './components/HomePage';
 
 const AppContainer = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    background-color: #f0f2f5;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: white;
 `;
 
 const ContentContainer = styled.div`
@@ -28,6 +29,7 @@ const ContentContainer = styled.div`
     flex: 1;
     width: 100%;
     padding: 2rem;
+    margin-top: 60px; 
 `;
 
 const App = () => {
@@ -85,20 +87,22 @@ const App = () => {
                     onOpenAddItemModal={handleOpenAddItemModal}
                     onCloseAddItemModal={closeAddItemModal}
                 />
-                <ContentContainer>
-                    <Routes>
-                        <Route path="/" element={<div>Strona główna</div>} />
-                        <Route path="/about" element={<AboutService />} />
-                        <Route path="/items" element={
-                            <>
-                                <SearchBar onSearch={handleSearch} />
-                                <SortOptions onSortChange={handleSortChange} />
-                                <Filters onFilterChange={handleFilterChange} categories={categories} locations={locations} voivodeships={voivodeships} />
-                                <ItemList items={filteredItems} />
-                            </>
-                        } />
-                    </Routes>
-                </ContentContainer>
+                <Routes>
+                    <Route path="/" element={<HomePage onOpenAddItemModal={handleOpenAddItemModal} />} />
+                    <Route path="/about" element={
+                        <ContentContainer>
+                            <AboutService />
+                        </ContentContainer>
+                    } />
+                    <Route path="/items" element={
+                        <ContentContainer>
+                            <SearchBar onSearch={handleSearch} />
+                            <SortOptions onSortChange={handleSortChange} />
+                            <Filters onFilterChange={handleFilterChange} categories={categories} locations={locations} voivodeships={voivodeships} />
+                            <ItemList items={filteredItems} />
+                        </ContentContainer>
+                    } />
+                </Routes>
                 {isAddModalOpen && (
                     <AddItemModal
                         onClose={closeAddItemModal}
