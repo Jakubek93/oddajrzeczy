@@ -59,7 +59,7 @@ const NavigationBar = ({ onOpenAddItemModal }) => {
                 <Logo>Oddaj rzeczy</Logo>
                 <NavMenu>
                     <NavLink to="/">Strona główna</NavLink>
-                    <NavLink to="/about">O nas</NavLink>
+                    <NavLink to="/about">O serwisie</NavLink>
                     <NavLink to="/items">Lista przedmiotów</NavLink>
                     <NavLink as="button" onClick={onOpenAddItemModal}>Dodaj przedmiot</NavLink>
                 </NavMenu>

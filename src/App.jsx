@@ -8,6 +8,7 @@ import ItemList from './components/ItemList';
 import SearchBar from './components/SearchBar';
 import Filters from './components/Filters';
 import SortOptions from './components/SortOptions';
+import AboutService from './components/AboutService';
 
 const AppContainer = styled.div`
     display: flex;
@@ -42,11 +43,9 @@ const App = () => {
     const [filters, setFilters] = useState({ category: '', location: '' });
     const [sortOption, setSortOption] = useState('dateAdded');
 
-
     const handleOpenAddItemModal = () => {
         setIsAddModalOpen(true);
     };
-
 
     const handleAddItem = (newItem) => {
         const newItemWithId = {
@@ -60,11 +59,9 @@ const App = () => {
         setIsAddModalOpen(false);
     };
 
-
     const handleSearch = (query) => setSearchQuery(query);
     const handleFilterChange = (newFilters) => setFilters(newFilters);
     const handleSortChange = (option) => setSortOption(option);
-
 
     const filteredItems = items
         .filter(item =>
@@ -86,14 +83,13 @@ const App = () => {
                 <ContentContainer>
                     <Routes>
                         <Route path="/" element={<div>Strona główna</div>} />
-                        <Route path="/about" element={<div>O nas</div>} />
+                        <Route path="/about" element={<AboutService />} />
                         <Route path="/items" element={
                             <>
-                                {}
                                 <SearchBar onSearch={handleSearch} />
                                 <SortOptions onSortChange={handleSortChange} />
                                 <Filters onFilterChange={handleFilterChange} />
-                                <ItemList items={filteredItems} /> {}
+                                <ItemList items={filteredItems} />
                             </>
                         } />
                     </Routes>
