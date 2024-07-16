@@ -1,40 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import EnlargedImage from './EnlargedImage';
 
-const ItemListContainer = styled.div`
+const ItemContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-`;
-
-const NoItemsMessage = styled.p`
-    color: black; 
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-    margin-top: 20px;
+    padding: 20px;
 `;
 
 const ItemCard = styled.div`
-    background-color: white;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    width: calc(33.333% - 20px);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
-
-    &:hover {
-        transform: translateY(-5px);
-    }
-
-    @media (max-width: 1024px) {
-        width: calc(50% - 20px);
-    }
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
 
     @media (max-width: 768px) {
         width: 100%;
@@ -45,47 +29,78 @@ const ItemImage = styled.img`
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    cursor: pointer;
 `;
 
 const ItemName = styled.h3`
-    font-size: 18px;
-    margin-bottom: 8px;
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    color: #333333;
+`;
+
+const ItemInfo = styled.p`
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666666;
 `;
 
 const ItemDescription = styled.p`
+    margin: 15px 0;
     font-size: 14px;
-    color: #666;
-    margin-bottom: 12px;
+    line-height: 1.4;
+    color: #444444;
 `;
 
-const ItemDetails = styled.div`
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #888;
-`;
+const ItemList = ({ items, onAddComment }) => {
+    const [enlargedImage, setEnlargedImage] = useState(null);
 
-const ItemList = ({ items }) => {
-    if (items.length === 0) {
-        return <NoItemsMessage>Brak przedmiotów do wyświetlenia.</NoItemsMessage>;
+    if (!items || items.length === 0) {
+        return <div>Brak przedmiotów do wyświetlenia.</div>;
     }
 
+    const handleImageClick = (imageUrl) => {
+        setEnlargedImage(imageUrl);
+    };
+
+    const handleCloseEnlargedImage = () => {
+        setEnlargedImage(null);
+    };
+
     return (
-        <ItemListContainer>
-            {items.map(item => (
-                <ItemCard key={item.id}>
-                    <ItemImage src={item.imageUrl || 'placeholder-image-url.jpg'} alt={item.name} />
-                    <ItemName>{item.name}</ItemName>
-                    <ItemDescription>{item.description}</ItemDescription>
-                    <ItemDetails>
-                        <span>{item.location}</span>
-                        <span>{new Date(item.dateAdded).toLocaleDateString()}</span>
-                    </ItemDetails>
-                </ItemCard>
-            ))}
-        </ItemListContainer>
+        <>
+            <ItemContainer>
+                {items.map(item => (
+                    <ItemCard key={item.id}>
+                        {item.imageUrl && (
+                            <ItemImage
+                                src={item.imageUrl}
+                                alt={item.name}
+                                onClick={() => handleImageClick(item.imageUrl)}
+                            />
+                        )}
+                        <ItemName>{item.name}</ItemName>
+                        <ItemInfo>Kategoria: {item.category}</ItemInfo>
+                        <ItemInfo>Lokalizacja: {item.location}</ItemInfo>
+                        <ItemInfo>Data dodania: {new Date(item.dateAdded).toLocaleDateString()}</ItemInfo>
+                        {item.phoneNumber && <ItemInfo>Telefon: {item.phoneNumber}</ItemInfo>}
+                        <ItemDescription>{item.description}</ItemDescription>
+                        <CommentSection
+                            comments={item.comments}
+                            onAddComment={(text) => onAddComment(item.id, text)}
+                        />
+                    </ItemCard>
+                ))}
+            </ItemContainer>
+            {enlargedImage && (
+                <EnlargedImage
+                    src={enlargedImage}
+                    alt="Powiększone zdjęcie"
+                    onClose={handleCloseEnlargedImage}
+                />
+            )}
+        </>
     );
 };
 
