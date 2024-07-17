@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import EnlargedImage from './EnlargedImage';
 
+
 const ItemContainer = styled.div`
     display: flex;
     flex-wrap: wrap;

@@ -32,7 +32,7 @@ const HeroSection = styled.section`
   align-items: center;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: white;
-  padding: 2rem;
+    padding: 2rem;
   position: relative;
 `;
 
