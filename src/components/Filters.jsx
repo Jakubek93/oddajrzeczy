@@ -5,7 +5,7 @@ const FilterContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    margin-top: 60px;
+    margin-top: 1px;
     padding-top: 20px
 `;
 

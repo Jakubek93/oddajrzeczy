@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabase';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -90,10 +92,40 @@ const AddItemModal = ({ onClose, onAddItem, categories, locations, voivodeships 
     const [voivodeship, setVoivodeship] = useState('');
     const [image, setImage] = useState(null);
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onAddItem({ name, category, description, location, phoneNumber, voivodeship, image });
-        onClose();
+
+        try {
+            let imageUrl = null;
+            if (image) {
+                const fileExt = image.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const { data, error } = await supabase.storage
+                    .from('item-images')
+                    .upload(fileName, image);
+
+                if (error) {
+                    throw new Error('Error uploading image: ' + error.message);
+                }
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('item-images')
+                    .getPublicUrl(fileName);
+                imageUrl = publicUrl;
+            }
+
+            const newItem = { name, category, description, location, phoneNumber, voivodeship, imageUrl };
+            await onAddItem(newItem);
+
+            console.log('Item added successfully:', newItem);
+            onClose();
+            navigate('/items');
+        } catch (error) {
+            console.error('Error in handleSubmit:', error);
+
+        }
     };
 
     return (

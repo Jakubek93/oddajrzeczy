@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
@@ -10,6 +10,7 @@ import Filters from './components/Filters';
 import SortOptions from './components/SortOptions';
 import AboutService from './components/AboutService';
 import HomePage from './components/HomePage';
+import { supabase } from './supabase';
 
 const AppContainer = styled.div`
     display: flex;
@@ -36,12 +37,29 @@ const App = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [filters, setFilters] = useState({ category: '', location: '' });
-    const [sortOption, setSortOption] = useState('dateAdded');
+    const [filters, setFilters] = useState({ category: '', location: '', voivodeship: '' });
+    const [sortOption, setSortOption] = useState('created_at');
 
     const categories = ['Odzież i Akcesoria', 'Meble i Wyposażenie Wnętrz', 'Elektronika'];
     const locations = ['Warszawa', 'Kraków', 'Łódź'];
     const voivodeships = ['Mazowieckie', 'Małopolskie', 'Łódzkie'];
+
+    useEffect(() => {
+        fetchItems();
+    }, []);
+
+    const fetchItems = async () => {
+        const { data, error } = await supabase
+            .from('items')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error fetching items:', error);
+        } else {
+            setItems(data);
+        }
+    };
 
     const handleOpenAddItemModal = () => {
         setIsAddModalOpen(true);
@@ -51,18 +69,31 @@ const App = () => {
         setIsAddModalOpen(false);
     };
 
-    const handleAddItem = (newItem) => {
-        const newItemWithId = {
-            ...newItem,
-            id: items.length + 1,
-            dateAdded: new Date().toISOString(),
-            popularity: 0,
-            imageUrl: newItem.image ? URL.createObjectURL(newItem.image) : null,
-        };
-        setItems(prevItems => [...prevItems, newItemWithId]);
-        setIsAddModalOpen(false);
-    };
 
+    const handleAddItem = async (newItem) => {
+        const { data, error } = await supabase
+            .from('items')
+            .insert([
+                {
+                    name: newItem.name,
+                    category: newItem.category,
+                    description: newItem.description,
+                    location: newItem.location,
+                    phone_number: newItem.phoneNumber,
+                    voivodeship: newItem.voivodeship,
+                    image_url: newItem.imageUrl
+                }
+            ])
+            .select();
+
+        if (error) {
+            console.error('Error adding item:', error);
+        } else {
+            console.log('New item added:', data);
+            setItems(prevItems => [data[0], ...prevItems]);
+            setIsAddModalOpen(false);
+        }
+    };
     const handleSearch = (query) => setSearchQuery(query);
     const handleFilterChange = (newFilters) => setFilters(newFilters);
     const handleSortChange = (option) => setSortOption(option);
@@ -71,10 +102,11 @@ const App = () => {
         .filter(item =>
             item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
             (filters.category ? item.category === filters.category : true) &&
-            (filters.location ? item.location === filters.location : true)
+            (filters.location ? item.location === filters.location : true) &&
+            (filters.voivodeship ? item.voivodeship === filters.voivodeship : true)
         )
         .sort((a, b) => {
-            if (sortOption === 'dateAdded') return new Date(b.dateAdded) - new Date(a.dateAdded);
+            if (sortOption === 'created_at') return new Date(b.created_at) - new Date(a.created_at);
             if (sortOption === 'popularity') return b.popularity - a.popularity;
             return 0;
         });
@@ -99,6 +131,7 @@ const App = () => {
                             <SearchBar onSearch={handleSearch} />
                             <SortOptions onSortChange={handleSortChange} />
                             <Filters onFilterChange={handleFilterChange} categories={categories} locations={locations} voivodeships={voivodeships} />
+                            {console.log('Filtered items:', filteredItems)}
                             <ItemList items={filteredItems} />
                         </ContentContainer>
                     } />

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const Header = styled.nav`
-    background-color: ${({ isScrolled }) => (isScrolled ? '#1565C0' : '#1877f2')};
+    background-color: ${({ $isScrolled }) => ($isScrolled ? '#1565C0' : '#1877f2')};
     color: white;
     padding: 0.5rem 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ const NavContainer = styled.div`
 `;
 
 const Logo = styled.h1`
-    font-size: ${({ isScrolled }) => (isScrolled ? '20px' : '24px')};
+    font-size: ${({ $isScrolled }) => ($isScrolled ? '20px' : '24px')};
     margin: 0;
     font-weight: bold;
     transition: all 0.3s ease-in-out;
@@ -51,7 +51,7 @@ const NavMenu = styled.div`
         flex-direction: column;
         position: fixed;
         top: 0;
-        left: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
+        left: ${({ $isOpen }) => ($isOpen ? '0' : '-100%')};
         width: 70%;
         max-width: 209px;
         height: 100vh;
@@ -114,8 +114,8 @@ const Overlay = styled.div`
     transition: opacity 0.3s ease-in-out;
 
     @media (max-width: 768px) {
-        display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-        opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+        display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
+        opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
     }
 `;
 
@@ -155,13 +155,13 @@ const NavigationBar = ({ onOpenAddItemModal, onCloseAddItemModal }) => {
 
     return (
         <>
-            <Header isScrolled={isScrolled}>
+            <Header $isScrolled={isScrolled}>
                 <NavContainer>
                     <MenuButton onClick={toggleMenu} aria-label="Menu">
                         {isMenuOpen ? '✕' : '☰'}
                     </MenuButton>
-                    <Logo isScrolled={isScrolled}>Oddaj rzeczy</Logo>
-                    <NavMenu isOpen={isMenuOpen}>
+                    <Logo $isScrolled={isScrolled}>Oddaj rzeczy</Logo>
+                    <NavMenu $isOpen={isMenuOpen}>
                         <NavLink onClick={() => handleNavigation('/')}>Strona główna</NavLink>
                         <NavLink onClick={() => handleNavigation('/about')}>O nas</NavLink>
                         <NavLink onClick={() => handleNavigation('/items')}>Lista przedmiotów</NavLink>
@@ -169,7 +169,7 @@ const NavigationBar = ({ onOpenAddItemModal, onCloseAddItemModal }) => {
                     </NavMenu>
                 </NavContainer>
             </Header>
-            <Overlay isOpen={isMenuOpen} onClick={toggleMenu} />
+            <Overlay $isOpen={isMenuOpen} onClick={toggleMenu} />
         </>
     );
 };

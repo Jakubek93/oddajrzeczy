@@ -54,6 +54,38 @@ const ItemDescription = styled.p`
     color: #444444;
 `;
 
+
+const ItemList = ({ items }) => {
+    console.log('Items received in ItemList:', items);
+    if (!items || items.length === 0) {
+        return <div>Brak przedmiotów do wyświetlenia.</div>;
+    }
+
+    return (
+        <ItemContainer>
+            {items.map(item => (
+                <ItemCard key={item.id}>
+                    {item.image_url && (
+                        <ItemImage
+                            src={item.image_url}
+                            alt={item.name}
+                            onClick={() => handleImageClick(item.image_url)}
+                        />
+                    )}
+                    <ItemName>{item.name}</ItemName>
+                    <ItemInfo>Kategoria: {item.category}</ItemInfo>
+                    <ItemInfo>Lokalizacja: {item.location}</ItemInfo>
+                    <ItemInfo>Data dodania: {new Date(item.created_at).toLocaleDateString()}</ItemInfo>
+                    {item.phone_number && <ItemInfo>Telefon: {item.phone_number}</ItemInfo>}
+                    <ItemDescription>{item.description}</ItemDescription>
+                </ItemCard>
+            ))}
+        </ItemContainer>
+    );
+};
+
+export default ItemList;
+/*
 const ItemList = ({ items, onAddComment }) => {
     const [enlargedImage, setEnlargedImage] = useState(null);
 
@@ -105,4 +137,4 @@ const ItemList = ({ items, onAddComment }) => {
     );
 };
 
-export default ItemList;
+export default ItemList;*/
