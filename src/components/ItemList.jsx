@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import EnlargedImage from './EnlargedImage';
 
-
 const ItemContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     gap: 20px;
     padding: 20px;
+    width: 100%;
 `;
 
 const ItemCard = styled.div`
@@ -20,24 +20,41 @@ const ItemCard = styled.div`
     width: calc(50% - 20px);
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
 
     @media (max-width: 768px) {
         width: 100%;
     }
+
+    ${props => props.isSingle && `
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    `}
 `;
 
 const ItemImage = styled.img`
     width: 100%;
-    height: 200px;
+    height: 300px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;
     cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 const ItemName = styled.h3`
     margin: 0 0 15px 0;
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: #333333;
 `;
 
@@ -50,91 +67,62 @@ const ItemInfo = styled.p`
 const ItemDescription = styled.p`
     margin: 15px 0;
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.6;
     color: #444444;
 `;
 
+const NoItemsMessage = styled.div`
+    text-align: center;
+    font-size: 18px;
+    color: #666666;
+    margin-top: 50px;
+    width: 100%;
+`;
 
 const ItemList = ({ items }) => {
-    console.log('Items received in ItemList:', items);
-    if (!items || items.length === 0) {
-        return <div>Brak przedmiotów do wyświetlenia.</div>;
-    }
-
-    return (
-        <ItemContainer>
-            {items.map(item => (
-                <ItemCard key={item.id}>
-                    {item.image_url && (
-                        <ItemImage
-                            src={item.image_url}
-                            alt={item.name}
-                            onClick={() => handleImageClick(item.image_url)}
-                        />
-                    )}
-                    <ItemName>{item.name}</ItemName>
-                    <ItemInfo>Kategoria: {item.category}</ItemInfo>
-                    <ItemInfo>Lokalizacja: {item.location}</ItemInfo>
-                    <ItemInfo>Data dodania: {new Date(item.created_at).toLocaleDateString()}</ItemInfo>
-                    {item.phone_number && <ItemInfo>Telefon: {item.phone_number}</ItemInfo>}
-                    <ItemDescription>{item.description}</ItemDescription>
-                </ItemCard>
-            ))}
-        </ItemContainer>
-    );
-};
-
-export default ItemList;
-/*
-const ItemList = ({ items, onAddComment }) => {
     const [enlargedImage, setEnlargedImage] = useState(null);
+    const isSingleItem = items.length === 1;
 
-    if (!items || items.length === 0) {
-        return <div>Brak przedmiotów do wyświetlenia.</div>;
-    }
+    console.log('Items received in ItemList:', items);
 
     const handleImageClick = (imageUrl) => {
         setEnlargedImage(imageUrl);
     };
 
-    const handleCloseEnlargedImage = () => {
-        setEnlargedImage(null);
-    };
+    if (!items || items.length === 0) {
+        return <NoItemsMessage>Brak przedmiotów do wyświetlenia.</NoItemsMessage>;
+    }
 
     return (
         <>
             <ItemContainer>
                 {items.map(item => (
-                    <ItemCard key={item.id}>
-                        {item.imageUrl && (
+                    <ItemCard key={item.id} isSingle={isSingleItem}>
+                        {item.image_url && (
                             <ItemImage
-                                src={item.imageUrl}
+                                src={item.image_url}
                                 alt={item.name}
-                                onClick={() => handleImageClick(item.imageUrl)}
+                                onClick={() => handleImageClick(item.image_url)}
                             />
                         )}
                         <ItemName>{item.name}</ItemName>
                         <ItemInfo>Kategoria: {item.category}</ItemInfo>
                         <ItemInfo>Lokalizacja: {item.location}</ItemInfo>
-                        <ItemInfo>Data dodania: {new Date(item.dateAdded).toLocaleDateString()}</ItemInfo>
-                        {item.phoneNumber && <ItemInfo>Telefon: {item.phoneNumber}</ItemInfo>}
+                        <ItemInfo>Data dodania: {new Date(item.created_at).toLocaleDateString()}</ItemInfo>
+                        {item.phone_number && <ItemInfo>Telefon: {item.phone_number}</ItemInfo>}
                         <ItemDescription>{item.description}</ItemDescription>
-                        <CommentSection
-                            comments={item.comments}
-                            onAddComment={(text) => onAddComment(item.id, text)}
-                        />
                     </ItemCard>
                 ))}
             </ItemContainer>
             {enlargedImage && (
                 <EnlargedImage
                     src={enlargedImage}
-                    alt="Powiększone zdjęcie"
-                    onClose={handleCloseEnlargedImage}
+                    alt="Powiększony obraz"
+                    onClose={() => setEnlargedImage(null)}
                 />
             )}
         </>
     );
 };
 
-export default ItemList;*/
+export default ItemList;

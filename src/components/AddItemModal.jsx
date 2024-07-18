@@ -1,41 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabase';
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-`;
-
-const Button = styled.button`
-    padding: 8px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-`;
-
-const CancelButton = styled(Button)`
-    background-color: #e0e0e0;
-    color: #333;
-
-    &:hover {
-        background-color: #d0d0d0;
-    }
-`;
-
-const SubmitButton = styled(Button)`
-    background-color: #1877f2;
-    color: white;
-
-    &:hover {
-        background-color: #166fe5;
-    }
-`;
 
 const ModalOverlay = styled.div`
     position: fixed;
@@ -45,8 +9,9 @@ const ModalOverlay = styled.div`
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    z-index: 1000;
 `;
 
 const ModalContent = styled.div`
@@ -54,12 +19,23 @@ const ModalContent = styled.div`
     padding: 20px;
     border-radius: 8px;
     width: 90%;
-    max-width: 500px;
+    max-width: 800px;
+    display: flex;
+    gap: 20px;
+`;
+
+const FormSection = styled.div`
+    flex: 1;
+`;
+
+const PreviewSection = styled.div`
+    flex: 1;
+    border-left: 1px solid #ddd;
+    padding-left: 20px;
 `;
 
 const ModalTitle = styled.h2`
-    color: black;
-    margin-bottom: 20px;
+    margin-top: 0;
 `;
 
 const Form = styled.form`
@@ -69,18 +45,72 @@ const Form = styled.form`
 
 const Input = styled.input`
     margin-bottom: 10px;
-    padding: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
 `;
 
-const TextArea = styled.textarea`
+const Textarea = styled.textarea`
     margin-bottom: 10px;
-    padding: 8px;
-    height: 100px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
 `;
 
 const Select = styled.select`
     margin-bottom: 10px;
-    padding: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+`;
+
+const Button = styled.button`
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+
+    &:hover {
+        background-color: #45a049;
+    }
+`;
+
+const PreviewCard = styled.div`
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+`;
+
+const PreviewImage = styled.img`
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+`;
+
+const PreviewTitle = styled.h3`
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    color: #333333;
+`;
+
+const PreviewInfo = styled.p`
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666666;
+`;
+
+const PreviewDescription = styled.p`
+    margin: 15px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #444444;
 `;
 
 const AddItemModal = ({ onClose, onAddItem, categories, locations, voivodeships }) => {
@@ -90,107 +120,110 @@ const AddItemModal = ({ onClose, onAddItem, categories, locations, voivodeships 
     const [location, setLocation] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [voivodeship, setVoivodeship] = useState('');
-    const [image, setImage] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
-    const navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        onAddItem({
+            name,
+            category,
+            description,
+            location,
+            phoneNumber,
+            voivodeship,
+            imageUrl
+        });
+    };
 
-        try {
-            let imageUrl = null;
-            if (image) {
-                const fileExt = image.name.split('.').pop();
-                const fileName = `${Date.now()}.${fileExt}`;
-                const { data, error } = await supabase.storage
-                    .from('item-images')
-                    .upload(fileName, image);
-
-                if (error) {
-                    throw new Error('Error uploading image: ' + error.message);
-                }
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('item-images')
-                    .getPublicUrl(fileName);
-                imageUrl = publicUrl;
-            }
-
-            const newItem = { name, category, description, location, phoneNumber, voivodeship, imageUrl };
-            await onAddItem(newItem);
-
-            console.log('Item added successfully:', newItem);
-            onClose();
-            navigate('/items');
-        } catch (error) {
-            console.error('Error in handleSubmit:', error);
-
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageFile(file);
+                setImageUrl(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
     return (
-        <ModalOverlay onClick={onClose}>
-            <ModalContent onClick={(e) => e.stopPropagation()}>
-                <ModalTitle>Dodaj nowy przedmiot</ModalTitle>
-                <Form onSubmit={handleSubmit}>
-                    <Input
-                        type="text"
-                        placeholder="Nazwa przedmiotu"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                    <Select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        required
-                    >
-                        <option value="">Wybierz kategorię</option>
-                        {categories.map((cat) => (
-                            <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                    </Select>
-                    <TextArea
-                        placeholder="Opis przedmiotu"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                    <Select
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        required
-                    >
-                        <option value="">Wybierz lokalizację</option>
-                        {locations.map((loc) => (
-                            <option key={loc} value={loc}>{loc}</option>
-                        ))}
-                    </Select>
-                    <Input
-                        type="tel"
-                        placeholder="Numer telefonu"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                    />
-                    <Select
-                        value={voivodeship}
-                        onChange={(e) => setVoivodeship(e.target.value)}
-                        required
-                    >
-                        <option value="">Wybierz województwo</option>
-                        {voivodeships.map((voi) => (
-                            <option key={voi} value={voi}>{voi}</option>
-                        ))}
-                    </Select>
-                    <Input
-                        type="file"
-                        onChange={(e) => setImage(e.target.files[0])}
-                    />
-                    <ButtonContainer>
-                        <CancelButton type="button" onClick={onClose}>Anuluj</CancelButton>
-                        <SubmitButton type="submit">Dodaj przedmiot</SubmitButton>
-                    </ButtonContainer>
-                </Form>
+        <ModalOverlay>
+            <ModalContent>
+                <FormSection>
+                    <ModalTitle>Dodaj nowy przedmiot</ModalTitle>
+                    <Form onSubmit={handleSubmit}>
+                        <Input
+                            type="text"
+                            placeholder="Nazwa przedmiotu"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        <Select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        >
+                            <option value="">Wybierz kategorię</option>
+                            {categories.map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </Select>
+                        <Textarea
+                            placeholder="Opis przedmiotu"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                        />
+                        <Select
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            required
+                        >
+                            <option value="">Wybierz lokalizację</option>
+                            {locations.map(loc => (
+                                <option key={loc} value={loc}>{loc}</option>
+                            ))}
+                        </Select>
+                        <Input
+                            type="text"
+                            placeholder="Numer telefonu"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                        <Select
+                            value={voivodeship}
+                            onChange={(e) => setVoivodeship(e.target.value)}
+                            required
+                        >
+                            <option value="">Wybierz województwo</option>
+                            {voivodeships.map(voiv => (
+                                <option key={voiv} value={voiv}>{voiv}</option>
+                            ))}
+                        </Select>
+                        <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        <Button type="submit">Dodaj przedmiot</Button>
+                    </Form>
+                    <Button onClick={onClose}>Zamknij</Button>
+                </FormSection>
+                <PreviewSection>
+                    <ModalTitle>Podgląd przedmiotu</ModalTitle>
+                    <PreviewCard>
+                        {imageUrl && <PreviewImage src={imageUrl} alt={name} />}
+                        <PreviewTitle>{name || 'Nazwa przedmiotu'}</PreviewTitle>
+                        <PreviewInfo>Kategoria: {category || 'Nie wybrano'}</PreviewInfo>
+                        <PreviewInfo>Lokalizacja: {location || 'Nie wybrano'}</PreviewInfo>
+                        <PreviewInfo>Województwo: {voivodeship || 'Nie wybrano'}</PreviewInfo>
+                        {phoneNumber && <PreviewInfo>Telefon: {phoneNumber}</PreviewInfo>}
+                        <PreviewDescription>{description || 'Brak opisu'}</PreviewDescription>
+                    </PreviewCard>
+                </PreviewSection>
             </ModalContent>
         </ModalOverlay>
     );
