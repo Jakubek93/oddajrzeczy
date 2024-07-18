@@ -18,6 +18,7 @@ const ItemCard = styled.div`
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     width: calc(50% - 20px);
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -37,6 +38,7 @@ const ItemCard = styled.div`
         margin: 0 auto;
     `}
 `;
+
 
 const ItemImage = styled.img`
     width: 100%;
