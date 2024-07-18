@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const SearchContainer = styled.div`
   margin-bottom: 1rem;
@@ -20,15 +20,15 @@ const SearchInput = styled.input`
 `;
 
 const SearchBar = ({ onSearch }) => {
-    return (
-        <SearchContainer>
-            <SearchInput
-                type="text"
-                placeholder="Wyszukaj przedmioty..."
-                onChange={(e) => onSearch(e.target.value)}
-            />
-        </SearchContainer>
-    );
+  return (
+    <SearchContainer>
+      <SearchInput
+        type="text"
+        placeholder="Wyszukaj przedmioty..."
+        onChange={(e) => onSearch(e.target.value)}
+      />
+    </SearchContainer>
+  );
 };
 
 export default SearchBar;

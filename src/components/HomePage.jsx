@@ -1,6 +1,6 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -32,7 +32,7 @@ const HeroSection = styled.section`
   align-items: center;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: white;
-    padding: 2rem;
+  padding: 2rem;
   position: relative;
 `;
 
@@ -112,48 +112,58 @@ const StatLabel = styled.div`
 `;
 
 const HomePage = ({ onOpenAddItemModal }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleStartGiving = () => {
-        onOpenAddItemModal(); // Otwiera modal dodawania przedmiotu
-    };
+  const handleStartGiving = () => {
+    onOpenAddItemModal(); // Otwiera modal dodawania przedmiotu
+  };
 
-    const handleFindItems = () => {
-        navigate('/items'); // Przekierowuje do listy przedmiotów
-    };
+  const handleFindItems = () => {
+    navigate("/items"); // Przekierowuje do listy przedmiotów
+  };
 
-    return (
-        <FullScreenContainer>
-            <HeroSection>
-                <BackgroundShape />
-                <BackgroundShape style={{ right: '-150px', left: 'auto', top: '50%', animationDelay: '-7s' }} />
-                <Content>
-                    <Title>Podziel się dobrem, oddaj niepotrzebne rzeczy</Title>
-                    <Subtitle>
-                        Twoje niepotrzebne przedmioty mogą zmienić czyjeś życie. Dołącz do naszej społeczności dzielenia się i wzajemnej pomocy.
-                    </Subtitle>
-                    <div>
-                        <CTAButton onClick={handleStartGiving}>Oddaj rzeczy</CTAButton>
-                        <CTAButton onClick={handleFindItems}>Znajdź potrzebne przedmioty</CTAButton>
-                    </div>
-                    <StatsContainer>
-                        <Stat>
-                            <StatNumber>10,000+</StatNumber>
-                            <StatLabel>Oddanych przedmiotów</StatLabel>
-                        </Stat>
-                        <Stat>
-                            <StatNumber>5,000+</StatNumber>
-                            <StatLabel>Zadowolonych użytkowników</StatLabel>
-                        </Stat>
-                        <Stat>
-                            <StatNumber>100+</StatNumber>
-                            <StatLabel>Miast w Polsce</StatLabel>
-                        </Stat>
-                    </StatsContainer>
-                </Content>
-            </HeroSection>
-        </FullScreenContainer>
-    );
+  return (
+    <FullScreenContainer>
+      <HeroSection>
+        <BackgroundShape />
+        <BackgroundShape
+          style={{
+            right: "-150px",
+            left: "auto",
+            top: "50%",
+            animationDelay: "-7s",
+          }}
+        />
+        <Content>
+          <Title>Podziel się dobrem, oddaj niepotrzebne rzeczy</Title>
+          <Subtitle>
+            Twoje niepotrzebne przedmioty mogą zmienić czyjeś życie. Dołącz do
+            naszej społeczności dzielenia się i wzajemnej pomocy.
+          </Subtitle>
+          <div>
+            <CTAButton onClick={handleStartGiving}>Oddaj rzeczy</CTAButton>
+            <CTAButton onClick={handleFindItems}>
+              Znajdź potrzebne przedmioty
+            </CTAButton>
+          </div>
+          <StatsContainer>
+            <Stat>
+              <StatNumber>10,000+</StatNumber>
+              <StatLabel>Oddanych przedmiotów</StatLabel>
+            </Stat>
+            <Stat>
+              <StatNumber>5,000+</StatNumber>
+              <StatLabel>Zadowolonych użytkowników</StatLabel>
+            </Stat>
+            <Stat>
+              <StatNumber>100+</StatNumber>
+              <StatLabel>Miast w Polsce</StatLabel>
+            </Stat>
+          </StatsContainer>
+        </Content>
+      </HeroSection>
+    </FullScreenContainer>
+  );
 };
 
 export default HomePage;
