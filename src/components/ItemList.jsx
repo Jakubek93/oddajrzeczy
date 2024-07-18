@@ -36,7 +36,7 @@ const ItemCard = styled.div`
   }
 
   ${(props) =>
-    props.isSingle &&
+    props.$isSingle &&
     `
         width: 100%;
         max-width: 600px;
@@ -111,7 +111,7 @@ const ItemList = ({ items }) => {
     <>
       <ItemContainer>
         {items.map((item) => (
-          <ItemCard key={item.id} isSingle={isSingleItem}>
+          <ItemCard key={item.id} $isSingle={isSingleItem}>
             {item.image_url && (
               <ImageContainer>
                 <ItemImage

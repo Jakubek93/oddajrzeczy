@@ -113,6 +113,15 @@ const PreviewDescription = styled.p`
   color: #444444;
 `;
 
+const CloseButton = styled(Button)`
+  background-color: #ff0000;
+  color: white;
+
+  &:hover {
+    background-color: #cc0000;
+  }
+`;
+
 const AddItemModal = ({
   onClose,
   onAddItem,
@@ -218,7 +227,7 @@ const AddItemModal = ({
             <Input type="file" accept="image/*" onChange={handleImageChange} />
             <Button type="submit">Dodaj przedmiot</Button>
           </Form>
-          <Button onClick={onClose}>Zamknij</Button>
+          <CloseButton onClick={onClose}>Zamknij</CloseButton>
         </FormSection>
         <PreviewSection>
           <ModalTitle>Podgląd przedmiotu</ModalTitle>

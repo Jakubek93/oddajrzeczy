@@ -45,6 +45,7 @@ const CommentItem = styled.li`
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 10px;
+  color: black;
 `;
 const CommentSection = ({ itemId }) => {
   const [comments, setComments] = useState([]);

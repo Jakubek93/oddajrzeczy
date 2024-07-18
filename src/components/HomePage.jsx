@@ -115,7 +115,7 @@ const HomePage = ({ onOpenAddItemModal }) => {
   const navigate = useNavigate();
 
   const handleStartGiving = () => {
-    onOpenAddItemModal(); // Otwiera modal dodawania przedmiotu
+    navigate('/add-item');
   };
 
   const handleFindItems = () => {
