@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -135,20 +136,35 @@ const AddItemModal = ({
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [voivodeship, setVoivodeship] = useState("");
-  const [imageFile, setImageFile] = useState(null);
+  const [ImageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddItem({
-      name,
-      category,
-      description,
-      location,
-      phoneNumber,
-      voivodeship,
-      imageUrl,
-    });
+    try {
+      const { data, error } = await supabase
+        .from("items")
+        .insert([
+          {
+            name,
+            category,
+            description,
+            location,
+            phone_number: phoneNumber,
+            voivodeship,
+            image_url: imageUrl,
+          },
+        ])
+        .select();
+
+      if (error) throw error;
+
+      onAddItem(data[0]);
+      onClose();
+      navigate('/items');
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   const handleImageChange = (e) => {

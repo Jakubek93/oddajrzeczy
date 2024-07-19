@@ -9,6 +9,7 @@
 *.hpp text
 *.txt text
 *.md text
+*.env
 
 # Zadeklaruj pliki, które zawsze powinny mieć CRLF na końcu linii.
 *.sln text eol=crlf

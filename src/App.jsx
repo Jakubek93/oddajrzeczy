@@ -45,12 +45,35 @@ const App = () => {
   const [sortOption, setSortOption] = useState("created_at");
 
   const categories = [
-    "Odzież i Akcesoria",
-    "Meble i Wyposażenie Wnętrz",
-    "Elektronika",
+    'Odzież i Akcesoria',
+    'Meble i Wyposażenie Wnętrz',
+    'Elektronika',
+    'Książki i Multimedia',
+    'Sport i Rekreacja',
+    'Zabawki i Artykuły dla Dzieci',
+    'Narzędzia i Majsterkowanie',
+    'Ogród i Rośliny',
+    'Motoryzacja',
+    'Sztuka i Kolekcje',
+    'Zdrowie i Uroda',
+    'Biżuteria i Zegarki',
+    'Instrumenty Muzyczne',
+    'Artykuły Biurowe',
+    'Zwierzęta'
   ];
-  const locations = ["Warszawa", "Kraków", "Łódź"];
-  const voivodeships = ["Mazowieckie", "Małopolskie", "Łódzkie"];
+
+  const locations = [
+    'Białystok', 'Bydgoszcz', 'Częstochowa', 'Gdańsk', 'Gdynia',
+    'Gliwice', 'Katowice', 'Kielce', 'Kraków', 'Lublin',
+    'Łódź', 'Poznań', 'Radom', 'Rzeszów', 'Sosnowiec',
+    'Szczecin', 'Toruń', 'Warszawa', 'Wrocław', 'Zabrze'
+  ];
+
+  const voivodeships = [
+    'Dolnośląskie', 'Kujawsko-pomorskie', 'Lubelskie', 'Lubuskie', 'Łódzkie',
+    'Małopolskie', 'Mazowieckie', 'Opolskie', 'Podkarpackie', 'Podlaskie',
+    'Pomorskie', 'Śląskie', 'Świętokrzyskie', 'Warmińsko-mazurskie', 'Wielkopolskie', 'Zachodniopomorskie'
+  ];
 
   useEffect(() => {
     fetchItems();
