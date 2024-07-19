@@ -115,11 +115,12 @@ const HomePage = ({ onOpenAddItemModal }) => {
   const navigate = useNavigate();
 
   const handleStartGiving = () => {
+    onOpenAddItemModal();
     navigate('/add-item');
   };
 
   const handleFindItems = () => {
-    navigate("/items"); // Przekierowuje do listy przedmiotów
+    navigate("/items");
   };
 
   return (
