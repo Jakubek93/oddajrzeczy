@@ -143,6 +143,18 @@ const App = () => {
       return 0;
     });
 
+  useEffect(() => {
+    const testConnection = async () => {
+      const { data, error } = await supabase.from('items').select('count').single();
+      if (error) {
+        console.error('Error connecting to Supabase:', error);
+      } else {
+        console.log('Successfully connected to Supabase');
+      }
+    };
+    testConnection();
+  }, []);
+
   return (
     <Router>
       <GlobalStyle />
