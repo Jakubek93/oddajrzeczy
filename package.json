@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@supabase/supabase-js": "^2.44.4",
     "formik": "^2.4.6",
     "react": "^18.3.1",
