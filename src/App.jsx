@@ -145,7 +145,7 @@ const App = () => {
 
   useEffect(() => {
     const testConnection = async () => {
-      const { data, error } = await supabase.from('items').select('count').single();
+      const { error } = await supabase.from('items').select('count').single();
       if (error) {
         console.error('Error connecting to Supabase:', error);
       } else {
@@ -190,6 +190,20 @@ const App = () => {
                 />
                 {console.log("Filtered items:", filteredItems)}
                 <ItemList items={filteredItems} />
+              </ContentContainer>
+            }
+          />
+          <Route
+            path="/add-item"
+            element={
+              <ContentContainer>
+                <AddItemModal
+                  onClose={closeAddItemModal}
+                  onAddItem={handleAddItem}
+                  categories={categories}
+                  locations={locations}
+                  voivodeships={voivodeships}
+                />
               </ContentContainer>
             }
           />

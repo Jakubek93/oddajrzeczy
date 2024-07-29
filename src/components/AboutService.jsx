@@ -2,60 +2,60 @@ import React from "react";
 import styled from "styled-components";
 
 const CenteringContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem;
-  min-height: 100vh;
-  background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f0f2f5;
 `;
 
-const AboutContainer = styled.div`
-  max-width: 1000px;
-  width: 100%;
-  padding: 3rem;
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
+const AboutContainer = styled.article`
+    max-width: 1000px;
+    width: 100%;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-top: 80px;
 `;
 
 const Title = styled.h1`
-  color: #1877f2;
-  text-align: center;
-  margin-bottom: 3rem;
-  font-size: 3.5rem;
-  font-weight: bold;
+    color: #1877f2;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 3.5rem;
+    font-weight: bold;
 `;
 
 const Section = styled.section`
-  margin-bottom: 3rem;
+    margin-bottom: 3rem;
 `;
 
 const Paragraph = styled.p`
-  line-height: 1.8;
-  color: #333;
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
 `;
 
 const Highlight = styled.span`
-  background-color: #e7f3ff;
-  color: #1877f2;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-weight: bold;
+    background-color: #e7f3ff;
+    color: #1877f2;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: bold;
 `;
 
-const FunFact = styled.div`
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin-top: 2rem;
-  font-style: italic;
-  font-size: 1.1rem;
-  border-left: 5px solid #ffeeba;
+const FunFact = styled.aside`
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    font-style: italic;
+    font-size: 1.1rem;
+    border-left: 5px solid #ffeeba;
 `;
 
 const AboutService = () => {
@@ -64,7 +64,7 @@ const AboutService = () => {
       <AboutContainer>
         <Title>O serwisie</Title>
 
-        <Section>
+        <Section aria-labelledby="section1">
           <Paragraph>
             Witaj w naszym wyjątkowym miejscu w sieci! Ten serwis został
             stworzony z myślą o
@@ -78,18 +78,18 @@ const AboutService = () => {
           </Paragraph>
         </Section>
 
-        <Section>
+        <Section aria-labelledby="section2">
           <Paragraph>
             Moja aplikacja to owoc ciężkiej pracy i... ostatniego egzaminu z
             CodersLab! Tak, dobrze słyszycie - nauka i praktyka w jednym. Twórcą
             tego projektu jest
             <Highlight> Jakub Nowak</Highlight>, który dzielnie walczył z kodem,
             mając u boku niezawodnego wujka Google. Bo kto z nas nie lubi czasem
-            "wygooglować" rozwiązania, prawda?
+            {" \"wygooglować\" "} rozwiązania, prawda?
           </Paragraph>
         </Section>
 
-        <Section>
+        <Section aria-labelledby="section3">
           <Paragraph>
             Mój serwis kieruje się prostymi, ale jakże ważnymi zasadami:
             <Highlight>
@@ -111,4 +111,4 @@ const AboutService = () => {
   );
 };
 
-export default AboutService;
+export default AboutService;{"\"wygooglować\" "}
