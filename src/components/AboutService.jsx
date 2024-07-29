@@ -111,4 +111,4 @@ const AboutService = () => {
   );
 };
 
-export default AboutService;{"\"wygooglować\" "}
+export default AboutService;
