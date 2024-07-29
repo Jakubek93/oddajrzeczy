@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -31,6 +32,14 @@ const Filters = ({
   const handleVoivodeshipChange = (e) => {
     onFilterChange({ voivodeship: e.target.value });
   };
+
+  Filters.propTypes = {
+    onFilterChange: PropTypes.func.isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string),
+    locations: PropTypes.arrayOf(PropTypes.string),
+    voivodeships: PropTypes.arrayOf(PropTypes.string),
+  };
+
 
   return (
     <FilterContainer>

@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
+
 
 const SortContainer = styled.div`
   margin-bottom: 1px;
@@ -19,6 +21,10 @@ const SortOptions = ({ onSortChange }) => {
       </Select>
     </SortContainer>
   );
+};
+
+SortOptions.propTypes = {
+  onSortChange: PropTypes.func.isRequired,
 };
 
 export default SortOptions;

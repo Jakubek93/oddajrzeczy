@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
+
 
 const SearchContainer = styled.div`
   margin-bottom: 1rem;
@@ -31,4 +33,8 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
+
+SearchBar.propTypes = {
+  onSearch: PropTypes.func.isRequired
+};
 export default SearchBar;
