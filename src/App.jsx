@@ -43,7 +43,6 @@ const App = () => {
     voivodeship: "",
   });
   const [sortOption, setSortOption] = useState("created_at");
-  const navigate = useNavigate();
 
   const categories = [
     'Odzież i Akcesoria',
@@ -95,12 +94,10 @@ const App = () => {
 
   const handleOpenAddItemModal = () => {
     setIsAddModalOpen(true);
-    navigate('/add-item');
   };
 
   const closeAddItemModal = () => {
     setIsAddModalOpen(false);
-    navigate('/items');
   };
 
   const handleAddItem = async (newItem) => {
@@ -124,10 +121,9 @@ const App = () => {
     } else {
       console.log("New item added:", data);
       setItems((prevItems) => [data[0], ...prevItems]);
-      closeAddItemModal();
+      setIsAddModalOpen(false);
     }
   };
-
   const handleSearch = (query) => setSearchQuery(query);
   const handleFilterChange = (newFilters) => setFilters(newFilters);
   const handleSortChange = (option) => setSortOption(option);
@@ -146,6 +142,18 @@ const App = () => {
       if (sortOption === "popularity") return b.popularity - a.popularity;
       return 0;
     });
+
+  useEffect(() => {
+    const testConnection = async () => {
+      const { error } = await supabase.from('items').select('count').single();
+      if (error) {
+        console.error('Error connecting to Supabase:', error);
+      } else {
+        console.log('Successfully connected to Supabase');
+      }
+    };
+    testConnection();
+  }, []);
 
   return (
     <Router>
@@ -180,6 +188,7 @@ const App = () => {
                   locations={locations}
                   voivodeships={voivodeships}
                 />
+                {console.log("Filtered items:", filteredItems)}
                 <ItemList items={filteredItems} />
               </ContentContainer>
             }
@@ -199,6 +208,15 @@ const App = () => {
             }
           />
         </Routes>
+        {isAddModalOpen && (
+          <AddItemModal
+            onClose={closeAddItemModal}
+            onAddItem={handleAddItem}
+            categories={categories}
+            locations={locations}
+            voivodeships={voivodeships}
+          />
+        )}
       </AppContainer>
     </Router>
   );
