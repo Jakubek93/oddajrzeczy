@@ -5,6 +5,136 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import PropTypes from 'prop-types';
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  gap: 20px;
+`;
+
+const FormSection = styled.div`
+  flex: 1;
+`;
+
+const PreviewSection = styled.div`
+  flex: 1;
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+`;
+
+const ModalTitle = styled.h2`
+  margin-top: 0;
+    color: #1a1a1a;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;
+
+const Textarea = styled.textarea`
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;
+
+const Select = styled.select`
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;
+
+const Button = styled.button`
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
+const PreviewCard = styled.div`
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+`;
+
+const PreviewTitle = styled.h3`
+  margin: 0 0 15px 0;
+  font-size: 1.2em;
+  color: #333333;
+`;
+
+const PreviewInfo = styled.p`
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666666;
+`;
+
+const PreviewDescription = styled.p`
+  margin: 15px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #444444;
+`;
+
+const CloseButton = styled(Button)`
+  background-color: #ff0000;
+  color: white;
+
+  &:hover {
+    background-color: #cc0000;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+`;
+
+
+
 const AddItemSchema = z.object({
   name: z.string().min(1, "Nazwa przedmiotu jest wymagana"),
   category: z.string().min(1, "Kategoria jest wymagana"),
@@ -15,166 +145,6 @@ const AddItemSchema = z.object({
   imageFile: z.instanceof(File).optional(),
 });
 
-const ModalOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-`;
-
-const FormSection = styled.div`
-    flex: 1;
-`;
-
-const PreviewSection = styled.div`
-    flex: 1;
-    border-left: 1px solid #ddd;
-    padding-left: 20px;
-`;
-
-const ModalTitle = styled.h2`
-    margin-top: 0;
-`;
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-`;
-
-const FormGroup = styled.div`
-    margin-bottom: 10px;
-`;
-
-const Label = styled.label`
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-`;
-
-const Input = styled.input`
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    width: 100%;
-`;
-
-const Textarea = styled.textarea`
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    width: 100%;
-`;
-
-const Select = styled.select`
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    width: 100%;
-`;
-
-const Button = styled.button`
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-    margin-top: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const PreviewCard = styled.div`
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const PreviewImage = styled.img`
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-`;
-
-const PreviewTitle = styled.h3`
-    margin: 0 0 15px 0;
-    font-size: 1.2em;
-    color: #333333;
-`;
-
-const PreviewInfo = styled.p`
-    margin: 5px 0;
-    font-size: 14px;
-    color: #666666;
-`;
-
-const PreviewDescription = styled.p`
-    margin: 15px 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #444444;
-`;
-
-const CloseButton = styled(Button)`
-    background-color: #ff0000;
-    color: white;
-
-    &:hover {
-        background-color: #cc0000;
-    }
-`;
-
-const ErrorMessage = styled.p`
-    color: red;
-    font-size: 12px;
-    margin-top: -5px;
-    margin-bottom: 10px;
-`;
-
-const ImageUploadLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 10px;
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  text-align: center;
-  color: #666;
-  background-color: #f9f9f9;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
 
 const AddItemModal = ({
                         onClose,
@@ -192,6 +162,15 @@ const AddItemModal = ({
     resolver: zodResolver(AddItemSchema),
   });
 
+  AddItemModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onAddItem: PropTypes.func.isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    locations: PropTypes.arrayOf(PropTypes.string).isRequired,
+    voivodeships: PropTypes.arrayOf(PropTypes.string).isRequired,
+  };
+
+
   const [imageUrl, setImageUrl] = useState("");
 
   const handleImageChange = (e) => {
@@ -206,7 +185,7 @@ const AddItemModal = ({
   };
 
   const onSubmit = (data) => {
-    onAddItem({ ...data, imageUrl });
+    onAddItem({...data, imageUrl});
   };
 
   const name = watch("name");
@@ -222,93 +201,67 @@ const AddItemModal = ({
         <FormSection>
           <ModalTitle>Dodaj nowy przedmiot</ModalTitle>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormGroup>
-              <Label htmlFor="name">Nazwa przedmiotu</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Nazwa przedmiotu"
-                {...register("name")}
-                aria-invalid={errors.name ? "true" : "false"}
-              />
-              {errors.name && <ErrorMessage role="alert">{errors.name.message}</ErrorMessage>}
-            </FormGroup>
+            <Input
+              type="text"
+              placeholder="Nazwa przedmiotu"
+              {...register("name")}
+            />
+            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 
-            <FormGroup>
-              <Label htmlFor="category">Kategoria</Label>
-              <Select id="category" {...register("category")} aria-invalid={errors.category ? "true" : "false"}>
-                <option value="">Wybierz kategorię</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </Select>
-              {errors.category && <ErrorMessage role="alert">{errors.category.message}</ErrorMessage>}
-            </FormGroup>
+            <Select {...register("category")}>
+              <option value="">Wybierz kategorię</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </Select>
+            {errors.category && (
+              <ErrorMessage>{errors.category.message}</ErrorMessage>
+            )}
 
-            <FormGroup>
-              <Label htmlFor="description">Opis przedmiotu</Label>
-              <Textarea
-                id="description"
-                placeholder="Opis przedmiotu"
-                {...register("description")}
-                aria-invalid={errors.description ? "true" : "false"}
-              />
-              {errors.description && <ErrorMessage role="alert">{errors.description.message}</ErrorMessage>}
-            </FormGroup>
+            <Textarea
+              placeholder="Opis przedmiotu"
+              {...register("description")}
+            />
+            {errors.description && (
+              <ErrorMessage>{errors.description.message}</ErrorMessage>
+            )}
 
-            <FormGroup>
-              <Label htmlFor="location">Lokalizacja</Label>
-              <Select id="location" {...register("location")} aria-invalid={errors.location ? "true" : "false"}>
-                <option value="">Wybierz lokalizację</option>
-                {locations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </Select>
-              {errors.location && <ErrorMessage role="alert">{errors.location.message}</ErrorMessage>}
-            </FormGroup>
+            <Select {...register("location")}>
+              <option value="">Wybierz lokalizację</option>
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </Select>
+            {errors.location && (
+              <ErrorMessage>{errors.location.message}</ErrorMessage>
+            )}
 
-            <FormGroup>
-              <Label htmlFor="phoneNumber">Numer telefonu</Label>
-              <Input
-                id="phoneNumber"
-                type="text"
-                placeholder="Numer telefonu"
-                {...register("phoneNumber")}
-                aria-invalid={errors.phoneNumber ? "true" : "false"}
-              />
-              {errors.phoneNumber && <ErrorMessage role="alert">{errors.phoneNumber.message}</ErrorMessage>}
-            </FormGroup>
+            <Input
+              type="text"
+              placeholder="Numer telefonu"
+              {...register("phoneNumber")}
+            />
+            {errors.phoneNumber && (
+              <ErrorMessage>{errors.phoneNumber.message}</ErrorMessage>
+            )}
 
-            <FormGroup>
-              <Label htmlFor="voivodeship">Województwo</Label>
-              <Select id="voivodeship" {...register("voivodeship")} aria-invalid={errors.voivodeship ? "true" : "false"}>
-                <option value="">Wybierz województwo</option>
-                {voivodeships.map((voiv) => (
-                  <option key={voiv} value={voiv}>
-                    {voiv}
-                  </option>
-                ))}
-              </Select>
-              {errors.voivodeship && <ErrorMessage role="alert">{errors.voivodeship.message}</ErrorMessage>}
-            </FormGroup>
+            <Select {...register("voivodeship")}>
+              <option value="">Wybierz województwo</option>
+              {voivodeships.map((voiv) => (
+                <option key={voiv} value={voiv}>
+                  {voiv}
+                </option>
+              ))}
+            </Select>
+            {errors.voivodeship && (
+              <ErrorMessage>{errors.voivodeship.message}</ErrorMessage>
+            )}
 
-            <FormGroup>
-              <ImageUploadLabel htmlFor="imageFile">
-                Dodaj zdjęcie
-                <Input
-                  id="imageFile"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-              </ImageUploadLabel>
-              {imageUrl && <PreviewImage src={imageUrl} alt="Podgląd zdjęcia" />}
-            </FormGroup>
+            <Input type="file" accept="image/*" onChange={handleImageChange} />
 
             <Button type="submit">Dodaj przedmiot</Button>
           </Form>
@@ -335,12 +288,6 @@ const AddItemModal = ({
   );
 };
 
-AddItemModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  onAddItem: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  locations: PropTypes.arrayOf(PropTypes.string).isRequired,
-  voivodeships: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
 export default AddItemModal;
+
+
