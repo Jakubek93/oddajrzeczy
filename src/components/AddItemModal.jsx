@@ -36,6 +36,8 @@ const ModalContent = styled.div`
     max-width: 800px;
     display: flex;
     gap: 20px;
+    flex-direction: column;
+    outline: none;
 `;
 
 const FormSection = styled.div`
@@ -58,23 +60,17 @@ const Form = styled.form`
 `;
 
 const FormGroup = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 `;
 
 const Label = styled.label`
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 `;
 
 const Input = styled.input`
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -82,7 +78,7 @@ const Input = styled.input`
 `;
 
 const Textarea = styled.textarea`
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -90,7 +86,7 @@ const Textarea = styled.textarea`
 `;
 
 const Select = styled.select`
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -140,26 +136,25 @@ const PreviewInfo = styled.p`
 `;
 
 const PreviewDescription = styled.p`
-    margin: 15px 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #444444;
+  margin: 15px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #444444;
 `;
 
 const CloseButton = styled(Button)`
-    background-color: #ff0000;
-    color: white;
+  background-color: #ff0000;
+  color: white;
 
-    &:hover {
-        background-color: #cc0000;
-    }
+  &:hover {
+    background-color: #cc0000;
+  }
 `;
 
 const ErrorMessage = styled.p`
-    color: red;
-    font-size: 12px;
-    margin-top: -5px;
-    margin-bottom: 10px;
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 `;
 
 const AddItemModal = ({
@@ -222,14 +217,13 @@ const AddItemModal = ({
                 type="text"
                 placeholder="Nazwa przedmiotu"
                 {...register("name")}
-                aria-invalid={errors.name ? "true" : "false"}
               />
-              {errors.name && <ErrorMessage role="alert">{errors.name.message}</ErrorMessage>}
+              {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
               <Label htmlFor="category">Kategoria</Label>
-              <Select id="category" {...register("category")} aria-invalid={errors.category ? "true" : "false"}>
+              <Select id="category" {...register("category")}>
                 <option value="">Wybierz kategorię</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -237,7 +231,7 @@ const AddItemModal = ({
                   </option>
                 ))}
               </Select>
-              {errors.category && <ErrorMessage role="alert">{errors.category.message}</ErrorMessage>}
+              {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
@@ -246,14 +240,13 @@ const AddItemModal = ({
                 id="description"
                 placeholder="Opis przedmiotu"
                 {...register("description")}
-                aria-invalid={errors.description ? "true" : "false"}
               />
-              {errors.description && <ErrorMessage role="alert">{errors.description.message}</ErrorMessage>}
+              {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
               <Label htmlFor="location">Lokalizacja</Label>
-              <Select id="location" {...register("location")} aria-invalid={errors.location ? "true" : "false"}>
+              <Select id="location" {...register("location")}>
                 <option value="">Wybierz lokalizację</option>
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
@@ -261,7 +254,7 @@ const AddItemModal = ({
                   </option>
                 ))}
               </Select>
-              {errors.location && <ErrorMessage role="alert">{errors.location.message}</ErrorMessage>}
+              {errors.location && <ErrorMessage>{errors.location.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
@@ -271,14 +264,13 @@ const AddItemModal = ({
                 type="text"
                 placeholder="Numer telefonu"
                 {...register("phoneNumber")}
-                aria-invalid={errors.phoneNumber ? "true" : "false"}
               />
-              {errors.phoneNumber && <ErrorMessage role="alert">{errors.phoneNumber.message}</ErrorMessage>}
+              {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
               <Label htmlFor="voivodeship">Województwo</Label>
-              <Select id="voivodeship" {...register("voivodeship")} aria-invalid={errors.voivodeship ? "true" : "false"}>
+              <Select id="voivodeship" {...register("voivodeship")}>
                 <option value="">Wybierz województwo</option>
                 {voivodeships.map((voiv) => (
                   <option key={voiv} value={voiv}>
@@ -286,7 +278,7 @@ const AddItemModal = ({
                   </option>
                 ))}
               </Select>
-              {errors.voivodeship && <ErrorMessage role="alert">{errors.voivodeship.message}</ErrorMessage>}
+              {errors.voivodeship && <ErrorMessage>{errors.voivodeship.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>

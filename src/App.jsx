@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./GlobalStyle";
 import NavigationBar from "./components/NavigationBar";
 import AddItemModal from "./components/AddItemModal";
@@ -13,27 +13,28 @@ import HomePage from "./components/HomePage";
 import { supabase } from "./supabase";
 
 const AppContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    background-color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: white;
 `;
 
 const ContentContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    width: 100%;
-    padding: 2rem;
-    margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  padding: 2rem;
+  margin-top: 60px;
 `;
 
 const App = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
@@ -42,7 +43,6 @@ const App = () => {
     voivodeship: "",
   });
   const [sortOption, setSortOption] = useState("created_at");
-  const navigate = useNavigate();
 
   const categories = [
     'Odzież i Akcesoria',
@@ -93,11 +93,11 @@ const App = () => {
   };
 
   const handleOpenAddItemModal = () => {
-    navigate('/add-item');
+    setIsAddModalOpen(true);
   };
 
   const closeAddItemModal = () => {
-    navigate('/items');
+    setIsAddModalOpen(false);
   };
 
   const handleAddItem = async (newItem) => {
@@ -121,10 +121,9 @@ const App = () => {
     } else {
       console.log("New item added:", data);
       setItems((prevItems) => [data[0], ...prevItems]);
-      closeAddItemModal();
+      setIsAddModalOpen(false);
     }
   };
-
   const handleSearch = (query) => setSearchQuery(query);
   const handleFilterChange = (newFilters) => setFilters(newFilters);
   const handleSortChange = (option) => setSortOption(option);
@@ -144,12 +143,25 @@ const App = () => {
       return 0;
     });
 
+  useEffect(() => {
+    const testConnection = async () => {
+      const { error } = await supabase.from('items').select('count').single();
+      if (error) {
+        console.error('Error connecting to Supabase:', error);
+      } else {
+        console.log('Successfully connected to Supabase');
+      }
+    };
+    testConnection();
+  }, []);
+
   return (
     <Router>
       <GlobalStyle />
       <AppContainer>
         <NavigationBar
           onOpenAddItemModal={handleOpenAddItemModal}
+          onCloseAddItemModal={closeAddItemModal}
         />
         <Routes>
           <Route
@@ -176,6 +188,7 @@ const App = () => {
                   locations={locations}
                   voivodeships={voivodeships}
                 />
+                {console.log("Filtered items:", filteredItems)}
                 <ItemList items={filteredItems} />
               </ContentContainer>
             }
@@ -195,6 +208,15 @@ const App = () => {
             }
           />
         </Routes>
+        {isAddModalOpen && (
+          <AddItemModal
+            onClose={closeAddItemModal}
+            onAddItem={handleAddItem}
+            categories={categories}
+            locations={locations}
+            voivodeships={voivodeships}
+          />
+        )}
       </AppContainer>
     </Router>
   );
