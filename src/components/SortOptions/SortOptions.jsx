@@ -1,16 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import PropTypes from 'prop-types';
-
-
-const SortContainer = styled.div`
-  margin-bottom: 1px;
-`;
-
-const Select = styled.select`
-  padding: 8px;
-  font-size: 16px;
-`;
+import {
+  SortContainer,
+  Select,
+} from "./SortOptionsStyle";
 
 const SortOptions = ({ onSortChange }) => {
   return (

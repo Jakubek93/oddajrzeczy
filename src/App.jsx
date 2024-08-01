@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./GlobalStyle";
-import NavigationBar from "./components/NavigationBar";
-import AddItemModal from "./components/AddItemModal";
-import ItemList from "./components/ItemList";
-import SearchBar from "./components/SearchBar";
-import Filters from "./components/Filters";
-import SortOptions from "./components/SortOptions";
-import AboutService from "./components/AboutService";
-import HomePage from "./components/HomePage";
+import NavigationBar from "./components/NavigationBar/NavigationBar.jsx";
+import AddItemModal from "./components/AddItemModal/AddItemModal.jsx";
+import ItemList from "./components/ItemList/ItemList.jsx";
+import SearchBar from "./components/SearchBar/SearchBar.jsx";
+import Filters from "./components/Filters/Filters.jsx";
+import SortOptions from "./components/SortOptions/SortOptions.jsx";
+import AboutService from "./components/AboutService/AboutService.jsx";
+import HomePage from "./components/HomePage/HomePage.jsx";
 import { supabase } from "./supabase";
 
 const AppContainer = styled.div`
@@ -188,7 +188,6 @@ const App = () => {
                   locations={locations}
                   voivodeships={voivodeships}
                 />
-                {console.log("Filtered items:", filteredItems)}
                 <ItemList items={filteredItems} />
               </ContentContainer>
             }

@@ -1,25 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import PropTypes from 'prop-types';
-
-
-const SearchContainer = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const SearchInput = styled.input`
-  width: 100%;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  transition: border-color 0.3s;
-
-  &:focus {
-    border-color: #1877f2;
-  }
-`;
+import {
+  SearchContainer,
+  SearchInput,
+} from "./SearchBarStyle.js"
 
 const SearchBar = ({ onSearch }) => {
   return (

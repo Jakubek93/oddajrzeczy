@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import EnlargedImage from "./EnlargedImage";
-import CommentSection from "./CommentSection";
+import EnlargedImage from "../EnlargedImage/EnlargedImage.jsx";
+import CommentSection from "../CommentSection/CommentSection.jsx";
 import PropTypes from 'prop-types';
 
 const ItemContainer = styled.div`

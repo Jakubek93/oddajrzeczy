@@ -1,93 +1,17 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { supabase } from "../supabase";
-
-const CommentContainer = styled.div`
-    margin-top: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-`;
-
-const CommentHeader = styled.h3`
-    color: #333;
-    margin-bottom: 15px;
-`;
-
-const CommentForm = styled.form`
-    display: flex;
-    margin-bottom: 20px;
-    
-    @media (max-width: 898px) {
-        flex-direction: column;
-    }
-`;
-
-const CommentInput = styled.input`
-    flex-grow: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 14px;
-    transition: border-color 0.3s;
-
-    &:focus {
-        outline: none;
-        border-color: #4caf50;
-    }
-
-    @media (max-width: 898px) {
-        width: 100%;
-        margin-bottom: 0.625rem;
-    }
-`;
-
-const SubmitButton = styled.button`
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: #45a049;
-    }
-    @media (max-width: 898px) {
-        margin-top: 0.625rem;
-        margin-left: 0;
-        width: 100%;
-    }
-`;
-
-const CommentList = styled.ul`
-    list-style-type: none;
-    padding: 0;
-`;
-
-const CommentItem = styled.li`
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-`;
-
-const CommentContent = styled.p`
-  margin: 0;
-  color: #333;
-`;
-
-const CommentDate = styled.span`
-  font-size: 0.8em;
-  color: #888;
-  display: block;
-  margin-top: 5px;
-`;
+import { supabase } from "../../supabase.js";
+import PropTypes from 'prop-types';
+import  {
+  CommentContainer,
+  CommentHeader,
+  CommentForm,
+  CommentInput,
+  SubmitButton,
+  CommentList,
+  CommentItem,
+  CommentContent,
+  CommentDate
+} from "./CommentSectionStyle.jsx"
 
 const CommentSection = ({ itemId }) => {
   const [comments, setComments] = useState([]);
@@ -96,6 +20,10 @@ const CommentSection = ({ itemId }) => {
   useEffect(() => {
     fetchComments();
   }, [itemId]);
+
+  CommentSection.propTypes = {
+    itemId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  };
 
   const fetchComments = async () => {
     const { data, error } = await supabase

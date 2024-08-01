@@ -1,19 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import PropTypes from 'prop-types';
-
-const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  margin-top: 1px;
-  padding-top: 20px;
-`;
-
-const Select = styled.select`
-  padding: 8px;
-  margin-bottom: 10px;
-`;
+import {
+  FilterContainer,
+  Select,
+} from "./FiltersStyle";
 
 const Filters = ({
   onFilterChange,
