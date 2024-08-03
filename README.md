@@ -8,7 +8,7 @@ Instrukcje krok po kroku, jak zainstalować i uruchomić projekt lokalnie.
 https://github.com/Jakubek93/oddajrzeczy.git
 
  Przejście do katalogu projektu
-cd twoje-repozytorium
+cd oddajrzeczy
 
  Instalacja zależności
 npm install
