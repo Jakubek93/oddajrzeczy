@@ -9,9 +9,11 @@ https://github.com/Jakubek93/oddajrzeczy.git
 
  Przejście do katalogu projektu
 cd twoje-repozytorium
-```
+
  Instalacja zależności
 npm install
+
+
 npm install react react-dom react-router-dom styled-components react-hook-form zod @hookform/resolvers @supabase/supabase-js
 
 Uruchomienie projektu
