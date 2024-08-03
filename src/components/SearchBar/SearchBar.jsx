@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   SearchContainer,
   SearchInput,
-} from "./SearchBarStyle.js"
+} from "./SearchBarStyle.jsx"
 
 const SearchBar = ({ onSearch }) => {
   return (
