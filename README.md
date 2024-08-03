@@ -67,3 +67,4 @@ Struktura plikow :
 ├── .gitignore
 ├── package.json
 └── README.md
+```
