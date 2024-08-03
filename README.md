@@ -1,8 +1,68 @@
-# React + Vite
+Aplikacja do dzielenia sie niepotrzebnymi rzeczami. 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Instalacja
 
-Currently, two official plugins are available:
+Instrukcje krok po kroku, jak zainstalować i uruchomić projekt lokalnie.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+https://github.com/Jakubek93/oddajrzeczy.git
+
+ Przejście do katalogu projektu
+cd twoje-repozytorium
+
+ Instalacja zależności
+npm install
+npm install react react-dom react-router-dom styled-components react-hook-form zod @hookform/resolvers @supabase/supabase-js
+
+Uruchomienie projektu
+npm start
+
+
+Struktura plikow :
+/oddajrzeczy
+├── /node_modules
+├── /public
+│   ├── love.png
+│   └── ...
+├── /src
+│   ├── /components
+│   │   ├── /AboutService
+│   │   │   ├── AboutService.jsx
+│   │   │   └── AboutServiceStyle.js
+│   │   ├── /AddItemModal
+│   │   │   ├── AddItemModal.jsx
+│   │   │   └── AddItemModalStyle.jsx
+│   │   ├── /CommentSection
+│   │   │   ├── CommentSection.jsx
+│   │   │   └── CommentSectionStyle.jsx
+│   │   ├── /EnlargedImage
+│   │   │   ├── EnlargedImage.jsx
+│   │   │   └── EnlargedImageStyle.jsx
+│   │   ├── /Filters
+│   │   │   ├── Filters.jsx
+│   │   │   └── FiltersStyle.js
+│   │   ├── /HomePage
+│   │   │   ├── HomePage.jsx
+│   │   │   └── HomePageStyle.jsx
+│   │   ├── /ItemList
+│   │   │   ├── ItemList.jsx
+│   │   │   └── ItemListStyle.js
+│   │   ├── /NavigationBar
+│   │   │   ├── NavigationBar.jsx
+│   │   │   └── NavigationBarStyle.js
+│   │   ├── /SearchBar
+│   │   │   ├── SearchBar.jsx
+│   │   │   └── SearchBarStyle.js
+│   │   ├── /SortOptions
+│   │   │   ├── SortOptions.jsx
+│   │   │   └── SortOptionsStyle.js
+│   ├── /styles
+│   │   ├── GlobalStyle.js
+│   ├── /supabase
+│   │   ├── supabase.js
+│   ├── App.jsx
+│   ├── index.js
+│   └── ...
+├── .gitignore
+├── package.json
+└── README.md
